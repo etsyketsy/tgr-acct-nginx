@@ -1,0 +1,31 @@
+ersion: '3'
+services:
+  nginx:
+    image: etsyketsy/tgr-acct-nginx:latest
+    restart: always
+    env_file:
+      - ../config/prod/nginx.env
+    command: "sh /start.sh"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - media-files:/media-files
+      - static-files:/static-files
+      - frontend:/frontend
+      - "/etc/letsencrypt:/etc/letsencrypt:ro"
+      - "/etc/nginx/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro"
+
+volumes:
+  media-files:
+    external: true
+  static-files:
+    external: true
+  frontend:
+    external: true
+
+networks:
+  default:
+    external:
+      name: tgr
+
